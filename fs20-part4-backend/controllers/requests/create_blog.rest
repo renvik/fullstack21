@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndpbHNvbiIsImlkIjoiNjA5YjliODlkMTJjMzc2M2QyZDAxOGQwIiwiaWF0IjoxNjIxNTA5ODY2fQ.TVyMvmQLdQb51mLWLMTIdaAmHIzRuhnR7HBVTatzOkw
+
+{
+    "title": "Kevin's world!",
+    "author": "KW",
+    "url": "http://www.kevinsworld.com",
+    "likes": "120",
+    "_id": "352385386"
+}
