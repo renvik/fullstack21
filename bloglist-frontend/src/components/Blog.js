@@ -5,4 +5,4 @@ const Blog = ({blog}) => (
   </div>  
 )
 
-export default Blog
+export default Blog;
