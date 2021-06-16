@@ -1,24 +1,23 @@
-// importing usestate for state hooks
+// importing usestate for state hooks, ctrl+shift+i formats with prettier
 import React, { useState, useEffect } from 'react';
-import Blog from './components/Blog';
+// import Blog from './components/Blog';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
-// jäin 2.6.
 
 const App = () => {
   // state hooks: in the first one the initial state is an empty array
   // blog is the value, setBlogs is function that changes the value
   const [blogs, setBlogs] = useState([]);
   const [newBlog, setNewBlog] = useState('');
-  const [showAll, setShowAll] = useState(false);
+  //const [showAll, setShowAll] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [user, setUser] = useState(null);
-console.log(blogs)
+//console.log(blogs)
   // hook that first renders
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -36,22 +35,25 @@ console.log(blogs)
     console.log(event.target.value);
     setNewBlog(event.target.value);
   };
-  const blogsToShow = showAll;
+  // const blogsToShow = showAll;
 
   // selvitä missä yhteyksissä handle loginia kutsutaan
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log('logging in with', username, password);
-
-    try {
+    console.log('logging in with username', username);
+  try {
       const user = await loginService.login({
-        username,
-        password,
+        username, password,
       });
+
+      window.localStorage.setItem(
+        'loggedBloglistuser', JSON.stringify(user)
+      ) 
+      blogService.setToken(user.token)
       setUser(user);
       setUsername('');
       setPassword('');
-    } catch (exception) {
+   } catch (exception) {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);
