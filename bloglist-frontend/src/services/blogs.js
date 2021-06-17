@@ -1,7 +1,9 @@
-// 9.6.: teht. 5.2:: lisätty let token jne. + tehty createsta async-funktio
+// 
 import axios from 'axios';
 const baseUrl = '/api/blogs';
 let token = null;
+
+
 
 const setToken = newToken => {
   token = `bearer ${newToken}`;
@@ -26,4 +28,5 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, setToken };
+const blogService = { getAll, create, update, setToken }
+export default blogService;

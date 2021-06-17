@@ -23,6 +23,16 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+
   const addBlog = (event) => {
     event.preventDefault();
     const blogObject = { title: newBlog };
@@ -36,7 +46,10 @@ const App = () => {
     setNewBlog(event.target.value);
   };
   // const blogsToShow = showAll;
+  const logout = (event) => {
+    window.localStorage.clear();
 
+  }
   // selvitä missä yhteyksissä handle loginia kutsutaan
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -47,7 +60,7 @@ const App = () => {
       });
 
       window.localStorage.setItem(
-        'loggedBloglistuser', JSON.stringify(user)
+        'loggedBloglistUser', JSON.stringify(user)
       ) 
       blogService.setToken(user.token)
       setUser(user);
@@ -84,11 +97,18 @@ const App = () => {
       <button type='submit'>login</button>
     </form>
   );
-
+  const handleLogout = () => {
+    console.log('kutsuttu')
+    window.localStorage.clear()
+    setUser(null);
+  }
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <input value={newBlog} onChange={handleBlogChange} />
       <button type='submit'>save</button>
+      <button type='button' onClick={handleLogout} >logout</button>
+      <div>
+      </div>   
     </form>
   );
 
@@ -111,5 +131,5 @@ const App = () => {
      
   );
 };
-
+// refaktoroi: blogform, loginform
 export default App;
