@@ -1,72 +1,58 @@
-// importing usestate for state hooks, ctrl+shift+i formats with prettier
+// ctrl+shift+i formats with prettier
 import React, { useState, useEffect } from 'react';
 // import Blog from './components/Blog';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import BlogForm from './components/BlogForm';
+
 
 const App = () => {
   // state hooks: in the first one the initial state is an empty array
   // blog is the value, setBlogs is function that changes the value
   const [blogs, setBlogs] = useState([]);
   const [newBlog, setNewBlog] = useState('');
-  //const [showAll, setShowAll] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const [user, setUser] = useState(null);
-//console.log(blogs)
+
+  //  console.log(blogs) -> prints all blogs on the browser's console
   // hook that first renders
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
     }
-  }, [])
+  }, []);
 
-
-  const addBlog = (event) => {
-    event.preventDefault();
-    const blogObject = { title: newBlog };
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
-      setNewBlog('');
-    });
-  };
   const handleBlogChange = (event) => {
     console.log(event.target.value);
     setNewBlog(event.target.value);
   };
-  // const blogsToShow = showAll;
-  const logout = (event) => {
-    window.localStorage.clear();
 
-  }
-  // selvitä missä yhteyksissä handle loginia kutsutaan
+  // handleLogin is invoked in loginForm
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('logging in with username', username);
-  try {
+    try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       });
 
-      window.localStorage.setItem(
-        'loggedBloglistUser', JSON.stringify(user)
-      ) 
-      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user));
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
-   } catch (exception) {
+    } catch (exception) {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);
@@ -98,19 +84,10 @@ const App = () => {
     </form>
   );
   const handleLogout = () => {
-    console.log('kutsuttu')
-    window.localStorage.clear()
+    console.log('kutsuttu');
+    window.localStorage.clear();
     setUser(null);
-  }
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <input value={newBlog} onChange={handleBlogChange} />
-      <button type='submit'>save</button>
-      <button type='button' onClick={handleLogout} >logout</button>
-      <div>
-      </div>   
-    </form>
-  );
+  };
 
   return (
     <div>
@@ -122,14 +99,23 @@ const App = () => {
         loginForm()
       ) : (
         <div>
-          <p>{user.name} logged in</p>
-          <ul>{blogs.map(blog => <li>{blog.title}</li>)}</ul>
-          {blogForm()}
+          <p>
+            {user.name} logged in{' '}
+            <button type='button' onClick={handleLogout}>
+              logout
+            </button>
+          </p>
+
+          <ul>
+            {blogs.map((blog) => (
+              <li>{blog.title}</li>
+            ))}
+          </ul>
+          <BlogForm handleAddBlog={(blog) => setBlogs(blogs.concat(blog))} />
         </div>
       )}
-</div>
-     
+    </div>
   );
 };
-// refaktoroi: blogform, loginform
+// refaktoroi: loginform
 export default App;
