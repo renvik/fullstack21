@@ -7,12 +7,23 @@ import loginService from './services/login';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
+// 1. buttonin tekstin vaihto view->hide
+// 2. sitten blogin kaikkien kenttien näyttö
+
+const BlogShow = ({ blog }) => {
+  const [showDetails, setShowDetails] = useState(false);
+  console.log(showDetails)
+  return (
+    <div>
+      {blog.title} <button onClick={()=> setShowDetails(!showDetails)}>view</button>
+    </div>
+  );
+};
 
 const App = () => {
   // state hooks: in the first one the initial state is an empty array
   // blog is the value, setBlogs is function that changes the value
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,11 +43,6 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
-  const handleBlogChange = (event) => {
-    console.log(event.target.value);
-    setNewBlog(event.target.value);
-  };
 
   // handleLogin should be invoked in loginForm
   const handleLogin = async (event) => {
@@ -91,18 +97,16 @@ const App = () => {
   };
   // **muokkaa tämä - missä käytetään?
   const addBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-      })
-  }
+    blogService.create(blogObject).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog));
+    });
+  };
 
   const blogForm = () => (
-    < Togglable buttonLabel="new blog">
-      <BlogForm createBlog={addBlog}/>
+    <Togglable buttonLabel='new blog'>
+      <BlogForm createBlog={addBlog} />
     </Togglable>
-  ) 
+  );
 
   return (
     <div>
@@ -111,7 +115,13 @@ const App = () => {
       <Notification message={errorMessage} />
 
       {user === null ? (
-        LoginForm()
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
       ) : (
         <div>
           <p>
@@ -123,7 +133,9 @@ const App = () => {
 
           <ul>
             {blogs.map((blog) => (
-              <li>{blog.title}</li>
+              <li>
+                <BlogShow blog={blog} />
+              </li>
             ))}
           </ul>
           {blogForm()}
