@@ -5,7 +5,8 @@ import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import BlogForm from './components/BlogForm';
-
+import LoginForm from './components/LoginForm';
+import Togglable from './components/Togglable';
 
 const App = () => {
   // state hooks: in the first one the initial state is an empty array
@@ -37,7 +38,7 @@ const App = () => {
     setNewBlog(event.target.value);
   };
 
-  // handleLogin is invoked in loginForm
+  // handleLogin should be invoked in loginForm
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('logging in with username', username);
@@ -60,34 +61,48 @@ const App = () => {
     }
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type='submit'>login</button>
-    </form>
-  );
+  // const loginForm = () => (
+  //   <form onSubmit={handleLogin}>
+  //     <div>
+  //       username
+  //       <input
+  //         type='text'
+  //         value={username}
+  //         name='Username'
+  //         onChange={({ target }) => setUsername(target.value)}
+  //       />
+  //     </div>
+  //     <div>
+  //       password
+  //       <input
+  //         type='password'
+  //         value={password}
+  //         name='Password'
+  //         onChange={({ target }) => setPassword(target.value)}
+  //       />
+  //     </div>
+  //     <button type='submit'>login</button>
+  //   </form>
+  // );
   const handleLogout = () => {
     console.log('kutsuttu');
     window.localStorage.clear();
     setUser(null);
   };
+  // **muokkaa tämä - missä käytetään?
+  const addBlog = (blogObject) => {
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+      })
+  }
+
+  const blogForm = () => (
+    < Togglable buttonLabel="new blog">
+      <BlogForm createBlog={addBlog}/>
+    </Togglable>
+  ) 
 
   return (
     <div>
@@ -96,7 +111,7 @@ const App = () => {
       <Notification message={errorMessage} />
 
       {user === null ? (
-        loginForm()
+        LoginForm()
       ) : (
         <div>
           <p>
@@ -111,11 +126,11 @@ const App = () => {
               <li>{blog.title}</li>
             ))}
           </ul>
-          <BlogForm handleAddBlog={(blog) => setBlogs(blogs.concat(blog))} />
+          {blogForm()}
         </div>
       )}
     </div>
   );
 };
-// refaktoroi: loginform
+// r. 130 was <BlogForm handleAddBlog={(blog) => setBlogs(blogs.concat(blog))} />
 export default App;
