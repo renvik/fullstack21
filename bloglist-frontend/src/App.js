@@ -7,15 +7,26 @@ import loginService from './services/login';
 import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
-// 1. buttonin tekstin vaihto view->hide
-// 2. sitten blogin kaikkien kenttien näyttö
 
+// this components controls whether all the blog fields are shown or not
+// the initial state is false and if the state is true all the fields are shown and button title is "hide"
 const BlogShow = ({ blog }) => {
   const [showDetails, setShowDetails] = useState(false);
-  console.log(showDetails)
+  console.log(showDetails);
   return (
     <div>
-      {blog.title} <button onClick={()=> setShowDetails(!showDetails)}>view</button>
+      <div>
+        {blog.title} {blog.author}{' '}
+        <button onClick={() => setShowDetails(!showDetails)}>
+          {showDetails ? 'hide' : 'view'}
+        </button>
+      </div>
+      {showDetails ? (
+        <div>
+          <p>{blog.url}</p>
+          <p>likes {blog.likes}</p>
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -29,12 +40,11 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  //  console.log(blogs) -> prints all blogs on the browser's console
   // hook that first renders
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
-
+  console.log(blogs);
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser');
     if (loggedUserJSON) {
@@ -133,7 +143,7 @@ const App = () => {
 
           <ul>
             {blogs.map((blog) => (
-              <li>
+              <li key={blog.id}>
                 <BlogShow blog={blog} />
               </li>
             ))}

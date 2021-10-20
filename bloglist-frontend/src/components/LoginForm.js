@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 // own component for Loginform:
 // receives functions that control state outside the component as destructured props instead of non-destructured (props) + props.handlesubmit
 const LoginForm = ({
@@ -39,7 +39,7 @@ const LoginForm = ({
 };
 
 LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired
-}
+  handleLogin: PropTypes.func.isRequired,
+};
 
-export default LoginForm
+export default LoginForm;
