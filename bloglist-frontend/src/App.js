@@ -10,9 +10,9 @@ import Togglable from './components/Togglable';
 
 // this components controls whether all the blog fields are shown or not
 // the initial state is false and if the state is true all the fields are shown and button title is "hide"
-const BlogShow = ({ blog }) => {
+const BlogShow = ({ blog, addLike }) => {
   const [showDetails, setShowDetails] = useState(false);
-  console.log(showDetails);
+  //console.log(showDetails);
   return (
     <div>
       <div>
@@ -25,7 +25,7 @@ const BlogShow = ({ blog }) => {
         <div>
           <p>{blog.url}</p>
           <p>likes {blog.likes}</p>
-          <button type='button'>
+          <button type='button' onClick={addLike}>
             like
           </button>
         </div>
@@ -58,26 +58,26 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-  // const addLike = (id, blogObject) => {
-  //   const updatedBlog = {
-  //     ...blogObject,
-  //     likes: blogObject.likes + 1,
-  //     user: blogObject.user.id,
-  //   };
-  //   blogService
-  //     .update(id, updatedBlog)
-  //     .then((response) => {
-  //       setBlogs(
-  //         blogs
-  //           .map((blog) => (blog.id !== id ? blog : response))
-  //           .sort((a, b) => b.likes - a.likes)
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data.error);
-  //     });
-  // };
-  // handleLogin should be invoked in loginForm
+  const addLike = (blogObject) => {
+    const updatedBlog = {
+      ...blogObject,
+      likes: blogObject.likes + 1,
+      user: blogObject.user.id,
+    };
+    blogService
+      .update(blogObject.id, updatedBlog)
+      .then((response) => {
+        setBlogs(
+          blogs
+            .map((blog) => (blog.id !== blogObject.id ? blog : response))
+            .sort((a, b) => b.likes - a.likes)
+        );
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('logging in with username', username);
@@ -144,7 +144,7 @@ const App = () => {
           <ul>
             {blogs.map((blog) => (
               <li key={blog.id}>
-                <BlogShow blog={blog} />
+                <BlogShow blog={blog} addLike={() => addLike(blog)} />
               </li>
             ))}
           </ul>
