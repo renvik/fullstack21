@@ -62,7 +62,7 @@ const App = () => {
     const updatedBlog = {
       ...blogObject,
       likes: blogObject.likes + 1,
-      user: blogObject.user.id,
+      //user: blogObject.user.id,
     };
     blogService
       .update(blogObject.id, updatedBlog)
