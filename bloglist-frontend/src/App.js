@@ -12,8 +12,7 @@ import Togglable from './components/Togglable';
 // the initial state is false and if the state is true all the fields are shown and button title is "hide"
 const BlogShow = ({ blog }) => {
   const [showDetails, setShowDetails] = useState(false);
-  //console.log(showDetails);
-
+  console.log(showDetails);
   return (
     <div>
       <div>
@@ -25,10 +24,7 @@ const BlogShow = ({ blog }) => {
       {showDetails ? (
         <div>
           <p>{blog.url}</p>
-          likes {blog.likes}
-          <button type='button' onClick={addLike}>
-            like
-          </button>
+          <p>likes {blog.likes}</p>
         </div>
       ) : null}
     </div>
@@ -60,26 +56,6 @@ const App = () => {
     }
   }, []);
 
-  const addLike = (id, blogObject) => {
-    const updatedBlog = {
-      ...blogObject,
-      likes: blogObject.likes + 1,
-      user: blogObject.user.id,
-    };
-    blogService
-      .update(id, updatedBlog)
-      .then((response) => {
-        setBlogs(
-          blogs
-            .map((blog) => (blog.id !== id ? blog : response))
-            .sort((a, b) => b.likes - a.likes)
-        );
-      })
-      .catch((error) => {
-        console.log(error.response.data.error);
-      });
-  };
-
   // handleLogin should be invoked in loginForm
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -103,6 +79,29 @@ const App = () => {
     }
   };
 
+  // const loginForm = () => (
+  //   <form onSubmit={handleLogin}>
+  //     <div>
+  //       username
+  //       <input
+  //         type='text'
+  //         value={username}
+  //         name='Username'
+  //         onChange={({ target }) => setUsername(target.value)}
+  //       />
+  //     </div>
+  //     <div>
+  //       password
+  //       <input
+  //         type='password'
+  //         value={password}
+  //         name='Password'
+  //         onChange={({ target }) => setPassword(target.value)}
+  //       />
+  //     </div>
+  //     <button type='submit'>login</button>
+  //   </form>
+  // );
   const handleLogout = () => {
     console.log('kutsuttu');
     window.localStorage.clear();
@@ -124,7 +123,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <BlogShow addLike={addLike} />
+
       <Notification message={errorMessage} />
 
       {user === null ? (
@@ -157,5 +156,5 @@ const App = () => {
     </div>
   );
 };
-
+// r. 130 was <BlogForm handleAddBlog={(blog) => setBlogs(blogs.concat(blog))} />
 export default App;
