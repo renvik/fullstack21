@@ -25,6 +25,9 @@ const BlogShow = ({ blog }) => {
         <div>
           <p>{blog.url}</p>
           <p>likes {blog.likes}</p>
+          <button type='button'>
+            like
+          </button>
         </div>
       ) : null}
     </div>
@@ -55,7 +58,25 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
+  // const addLike = (id, blogObject) => {
+  //   const updatedBlog = {
+  //     ...blogObject,
+  //     likes: blogObject.likes + 1,
+  //     user: blogObject.user.id,
+  //   };
+  //   blogService
+  //     .update(id, updatedBlog)
+  //     .then((response) => {
+  //       setBlogs(
+  //         blogs
+  //           .map((blog) => (blog.id !== id ? blog : response))
+  //           .sort((a, b) => b.likes - a.likes)
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data.error);
+  //     });
+  // };
   // handleLogin should be invoked in loginForm
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -79,29 +100,6 @@ const App = () => {
     }
   };
 
-  // const loginForm = () => (
-  //   <form onSubmit={handleLogin}>
-  //     <div>
-  //       username
-  //       <input
-  //         type='text'
-  //         value={username}
-  //         name='Username'
-  //         onChange={({ target }) => setUsername(target.value)}
-  //       />
-  //     </div>
-  //     <div>
-  //       password
-  //       <input
-  //         type='password'
-  //         value={password}
-  //         name='Password'
-  //         onChange={({ target }) => setPassword(target.value)}
-  //       />
-  //     </div>
-  //     <button type='submit'>login</button>
-  //   </form>
-  // );
   const handleLogout = () => {
     console.log('kutsuttu');
     window.localStorage.clear();
@@ -156,5 +154,5 @@ const App = () => {
     </div>
   );
 };
-// r. 130 was <BlogForm handleAddBlog={(blog) => setBlogs(blogs.concat(blog))} />
+
 export default App;
