@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndpbHNvbiIsImlkIjoiNjA5YjliODlkMTJjMzc2M2QyZDAxOGQwIiwiaWF0IjoxNjIwODEwOTUyfQ.b4s2cC-U63yb5DT6KpO9xyd_CxujRdUXexVPmsoQL9U
 
 {
-    "title": "Keskiviikko on kiva päivä",
+    "title": "Cypress on kiinnostava",
     "author": "KW",
-    "url": "http://www.wednesdays.eu",
-    "likes": "250"
+    "url": "http://www.testing.eu",
+    "likes": "105"
 }

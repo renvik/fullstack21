@@ -8,6 +8,7 @@ import BlogForm from './components/BlogForm';
 import LoginForm from './components/LoginForm';
 import Togglable from './components/Togglable';
 import BlogShow from './components/BlogShow';
+//
 
 const App = () => {
   // state hooks: in the first one the initial state is an empty array

@@ -10,7 +10,7 @@ usersRouter.get('/', async (request, response) => {
   response.json(users.map(u => u.toJSON()))
 })
 
-// user log in -route: http://localhost:3001/api/users/, only registered users can log in
+// user log in -route (broken!)
 usersRouter.post('/', async (request, response) => {
   const body = request.body
 
@@ -23,7 +23,7 @@ usersRouter.post('/', async (request, response) => {
   response.status(200).json({ info: 'welcome!' })
 })
 
-// user registration -route (ie. user creates an account)
+// user registration -route (ie. user creates an account) broken! Form is also missing
 usersRouter.post('/', async (request, response) => {
   const { password, name, username } = request.body
 

@@ -1,5 +1,5 @@
 
-POST http://localhost:3001/api/users/registration/
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
