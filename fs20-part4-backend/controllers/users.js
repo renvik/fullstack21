@@ -10,20 +10,18 @@ usersRouter.get('/', async (request, response) => {
   response.json(users.map(u => u.toJSON()))
 })
 
-// user log in -route (broken!)
-usersRouter.post('/', async (request, response) => {
-  const body = request.body
+// usersRouter.post('/', async (request, response) => {
+//   const body = request.body
 
-  const user = await User.findOne({ username: body.username })
-  const correctpwd = user === null ? false : await bcrypt.compare(body.password, user.passwordHash)
+//   const user = await User.findOne({ username: body.username })
+//   const correctpwd = user === null ? false : await bcrypt.compare(body.password, user.passwordHash)
 
-  if(!(user && correctpwd)){
-    return response.status(400).json({ error: 'invalid user information to log in' })
-  }
-  response.status(200).json({ info: 'welcome!' })
-})
+//   if(!(user && correctpwd)){
+//     return response.status(400).json({ error: 'invalid user information to log in' })
+//   }
+//   response.status(200).json({ info: 'welcome!' })
+// })
 
-// user registration -route (ie. user creates an account) broken! Form is also missing
 usersRouter.post('/', async (request, response) => {
   const { password, name, username } = request.body
 
