@@ -7,22 +7,56 @@ describe('Blog app', function () {
       username: 'mesko',
       password: 'salainen',
     };
-    // something wrong in this route - log in does not work at all
+
     cy.request('POST', 'http://localhost:3003/api/users', user);
     cy.visit('http://localhost:3000');
   });
 
   it('Login form is shown', function () {
-    cy.contains('Login');
+    cy.contains('login');
   });
 
   describe('Login', function () {
     it('succeeds with correct credentials', function () {
-      // ...
+      cy.contains('login').click();
+      cy.get('#username').type('mesko');
+      cy.get('#password').type('salainen');
+      cy.get('#login-button').click();
+
+      cy.contains('Matti Esko logged in');
     });
 
     it('fails with wrong credentials', function () {
-      // ...
+      cy.contains('login').click();
+      cy.get('#username').type('mesko');
+      cy.get('#password').type('wrong');
+      cy.get('#login-button').click();
+
+      cy.get('.error')
+        .should('contain', 'Wrong credentials');
+      //  .and('have.css', 'color', 'rgb(255, 0, 0)')
+      //  .and('have.css', 'border-style', 'solid');
+
+      cy.get('html').should('not.contain', 'Matti Esko logged in');
     });
   });
+  describe('When logged in', function() {
+    beforeEach(function() {
+      // logs in user here:
+      cy.get('#username').type('mesko');
+      cy.get('#password').type('salainen');
+      cy.get('#login-button').click();
+    });
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click();
+      cy.get('#title').type('a blog created by cypress');
+      // api-request to /api/blogs fails
+      cy.get('#create-button').click();
+      cy.contains('a blog created by cypress');
+
+    });
+  });
+
+
 });

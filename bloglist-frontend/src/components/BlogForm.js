@@ -25,6 +25,7 @@ const BlogForm = ({ handleAddBlog }) => {
       <div>
         title
         <input
+          id = 'title'
           type='text'
           value={title}
           name='Title'
@@ -50,7 +51,7 @@ const BlogForm = ({ handleAddBlog }) => {
         />
       </div>
       {/*<input value={newBlog} onChange={handleBlogChange} />*/}
-      <button type='submit'>create</button>
+      <button id='create-button' type='submit'>create</button>
       <div></div>
     </form>
   );
