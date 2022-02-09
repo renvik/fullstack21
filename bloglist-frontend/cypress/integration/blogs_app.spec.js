@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
@@ -51,7 +52,8 @@ describe('Blog app', function () {
     it('A blog can be created', function() {
       cy.contains('new blog').click();
       cy.get('#title').type('a blog created by cypress');
-      // api-request to /api/blogs fails
+      cy.get('#author').type('John Cypress');
+      cy.get('#url').type('www.maketestnotwar.io');
       cy.get('#create-button').click();
       cy.contains('a blog created by cypress');
 

@@ -12,6 +12,7 @@ const BlogForm = ({ handleAddBlog }) => {
       author: author,
       url: url,
     };
+
     blogService.create(blogObject).then((returnedBlog) => {
       handleAddBlog(returnedBlog);
       setTitle('');
@@ -35,6 +36,7 @@ const BlogForm = ({ handleAddBlog }) => {
       <div>
         author
         <input
+          id='author'
           type='text'
           value={author}
           name='Author'
@@ -44,6 +46,7 @@ const BlogForm = ({ handleAddBlog }) => {
       <div>
         url
         <input
+          id='url'
           type='text'
           value={url}
           name='Url'
